@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Convey;
 using Convey.Logging;
 using Convey.Secrets.Vault;
@@ -10,6 +11,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Services.User.Application;
+using Services.User.Application.Commands;
+using Services.User.Application.DTO;
+using Services.User.Application.Queries;
 using Services.User.Infrastructure;
 
 namespace Services.User.Api
@@ -32,7 +36,13 @@ namespace Services.User.Api
                     .UseInfrastructure()
                     .UseDispatcherEndpoints(endpoints => endpoints
                         .Get("", ctx => ctx.Response.WriteAsync(ctx.RequestServices.GetService<AppOptions>().Name))
-                    ))
+                        .Get<GetUsers, IEnumerable<UserDto>>("users")
+                        .Get<GetUser, UserDetailsDto>("users/{userId}")
+                        .Get<GetUserState, UserStateDto>("users/{userId}/state")
+                        .Post<CompleteUserRegistration>("users",
+                            afterDispatch: (cmd, ctx) => ctx.Response.Created($"users/{cmd.UserId}"))
+                        .Put<ChangeUserState>("users/{userId}/state/{state}",
+                            afterDispatch: (cmd, ctx) => ctx.Response.NoContent())))
                 .UseLogging()
                 .UseVault();
     }
