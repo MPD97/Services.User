@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Services.User.Core.Services
+namespace Services.User.Core.Repositories
 {
     public interface IUserRepository
     {
