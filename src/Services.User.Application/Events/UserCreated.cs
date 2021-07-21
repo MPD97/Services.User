@@ -1,5 +1,6 @@
 ﻿using System;
 using Convey.CQRS.Events;
+using Services.User.Core.Entities;
 
 namespace Services.User.Application.Events
 {
@@ -7,10 +8,12 @@ namespace Services.User.Application.Events
     public class UserCreated : IEvent
     {
         public Guid UserId { get; }
-        
-        public UserCreated(Guid userId)
+        public State State { get; }
+
+        public UserCreated(Guid userId, State state)
         {
             UserId = userId;
+            State = state;
         }
     }
 }
