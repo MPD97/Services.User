@@ -7,5 +7,5 @@ FROM mcr.microsoft.com/dotnet/aspnet:5.0
 WORKDIR /app
 COPY --from=build /publish/out .
 ENV ASPNETCORE_ENVIRONMENT local_docker
-ENV ASPNETCORE_URLS http://*:5012
+ENV ASPNETCORE_URLS http://*:80
 ENTRYPOINT dotnet Services.User.Api.dll
