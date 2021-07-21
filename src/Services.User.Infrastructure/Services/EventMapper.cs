@@ -16,7 +16,7 @@ namespace Services.User.Infrastructure.Services
         {
             switch (@event)
             {
-                case UserRegistrationCompleted e: return new Application.Events.UserCreated(e.User.Id);
+                case UserRegistrationCompleted e: return new Application.Events.UserCreated(e.User.Id, e.User.State);
                 case UserStateChanged e:
                     return new Application.Events.UserStateChanged(e.User.Id,
                         e.User.State.ToString().ToLowerInvariant(), e.PreviousState.ToString().ToLowerInvariant());
