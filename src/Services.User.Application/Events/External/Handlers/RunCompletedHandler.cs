@@ -23,10 +23,10 @@ namespace Services.User.Application.Events.External.Handlers
 
         public async Task HandleAsync(RunCompleted @event)
         {
-            var customer = await _userRepository.GetAsync(@event.CustomerId);
+            var customer = await _userRepository.GetAsync(@event.UserId);
             if (customer is null)
             {
-                throw new UserNotFoundException(@event.CustomerId);
+                throw new UserNotFoundException(@event.UserId);
             }
 
             customer.AddCompletedRun(@event.RunId);
