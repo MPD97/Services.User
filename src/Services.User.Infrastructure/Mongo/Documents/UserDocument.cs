@@ -10,8 +10,7 @@ namespace Services.User.Infrastructure.Mongo.Documents
     {
         public Guid Id { get; set; }
         public string Email { get; set; }
-        public string FullName { get; set; }
-        public string Address { get; set; }
+        public string Pseudonym { get; set; }
         public State State { get; set; }
         public DateTime CreatedAt { get; set; }
         public IEnumerable<Guid> CompletedRuns { get; set; }

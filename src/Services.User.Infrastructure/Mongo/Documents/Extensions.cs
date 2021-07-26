@@ -5,7 +5,7 @@ namespace Services.User.Infrastructure.Mongo.Documents
     public static class Extensions
     {
         public static Core.Entities.User AsEntity(this UserDocument document)
-            => new Core.Entities.User(document.Id, document.Email, document.CreatedAt, document.FullName, document.Address,
+            => new Core.Entities.User(document.Id, document.Email, document.CreatedAt, document.Pseudonym,
                 document.State, document.CompletedRuns);
 
         public static UserDocument AsDocument(this Core.Entities.User entity)
@@ -13,8 +13,7 @@ namespace Services.User.Infrastructure.Mongo.Documents
             {
                 Id = entity.Id,
                 Email = entity.Email,
-                FullName = entity.FullName,
-                Address = entity.Address,
+                Pseudonym = entity.Pseudonym,
                 State = entity.State,
                 CreatedAt = entity.CreatedAt,
                 CompletedRuns = entity.CompletedRuns
@@ -33,8 +32,7 @@ namespace Services.User.Infrastructure.Mongo.Documents
             {
                 Id = document.Id,
                 Email = document.Email,
-                FullName = document.FullName,
-                Address = document.Address,
+                Pseudonym = document.Pseudonym,
                 State = document.State.ToString().ToLowerInvariant(),
                 CreatedAt = document.CreatedAt,
                 CompletedRuns = document.CompletedRuns
