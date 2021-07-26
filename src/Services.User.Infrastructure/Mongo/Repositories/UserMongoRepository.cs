@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Convey.Persistence.MongoDB;
 using Services.User.Core.Repositories;
@@ -22,7 +23,13 @@ namespace Services.User.Infrastructure.Mongo.Repositories
             return user?.AsEntity();
         }
 
-        public Task AddAsync(Core.Entities.User user) => _repository.AddAsync(user.AsDocument());
-        public Task UpdateAsync(Core.Entities.User user) => _repository.UpdateAsync(user.AsDocument());
+        public async Task AddAsync(Core.Entities.User user) 
+            => await _repository.AddAsync(user.AsDocument());
+        
+        public async Task<bool> ExistsAsync(string pseudonym)
+            => await _repository.ExistsAsync(u => u.Pseudonym == pseudonym);
+            
+        public async Task UpdateAsync(Core.Entities.User user) 
+            => await _repository.UpdateAsync(user.AsDocument());
     }
 }

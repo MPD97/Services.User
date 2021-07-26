@@ -7,6 +7,7 @@ namespace Services.User.Core.Repositories
     {
         Task<Entities.User> GetAsync(Guid id);
         Task AddAsync(Entities.User user);
+        Task<bool> ExistsAsync(string pseudonym);
         Task UpdateAsync(Entities.User user);
     }
 }
