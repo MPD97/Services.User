@@ -27,16 +27,15 @@ namespace Services.User.Application.Commands.Handlers
         {
             var user = await _userRepository.GetAsync(command.UserId);
             if (user is null)
-            {
                 throw new UserNotFoundException(command.UserId);
-            }
             
             if (user.State is State.Valid)
-            {
                 throw new UserAlreadyRegisteredException(command.UserId);
-            }
 
-            user.CompleteRegistration(command.FullName, command.Address);
+            if (await _userRepository.ExistsAsync(command.Pseudonym))
+                throw new UserAlreadyRegisteredException(command.UserId);
+            
+            user.CompleteRegistration(command.Pseudonym);
             await _userRepository.UpdateAsync(user);
 
             var events = _eventMapper.MapAll(user.Events);

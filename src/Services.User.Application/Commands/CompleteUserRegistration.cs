@@ -7,14 +7,12 @@ namespace Services.User.Application.Commands
     public class CompleteUserRegistration : ICommand
     {
         public Guid UserId { get; }
-        public string FullName { get; }
-        public string Address { get; }
+        public string Pseudonym { get; }
 
-        public CompleteUserRegistration(Guid userId, string fullName, string address)
+        public CompleteUserRegistration(Guid userId, string pseudonym)
         {
             UserId = userId;
-            FullName = fullName;
-            Address = address;
+            Pseudonym = pseudonym;
         }
     }
 }
