@@ -5,11 +5,11 @@ namespace Services.User.Core.Exceptions
     public class UserNotFoundException : DomainException
     {
         public override string Code { get; } = "user_not_found";
-        public Guid Id { get; }
+        public Guid UserId { get; }
 
-        public UserNotFoundException(Guid id) : base($"User with id: {id} was not found.")
+        public UserNotFoundException(Guid userId) : base($"User with id: {userId} was not found.")
         {
-            Id = id;
+            UserId = userId;
         }
     }
 }

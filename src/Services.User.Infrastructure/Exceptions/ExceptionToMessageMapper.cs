@@ -14,18 +14,18 @@ namespace Services.User.Infrastructure.Exceptions
             {
                 CannotChangeUserStateException ex => message switch
                 {
-                    ChangeUserState _ => new ChangeUserStateRejected(ex.Id,
+                    ChangeUserState _ => new ChangeUserStateRejected(ex.UserId,
                         ex.State.ToString().ToLowerInvariant(), ex.Message, ex.Code),
-                    CompleteUserRegistration _ => new CompleteUserRegistrationRejected(ex.Id, ex.Message,
+                    CompleteUserRegistration _ => new CompleteUserRegistrationRejected(ex.UserId, ex.Message,
                         ex.Code),
                     _ => null
                 },
-                UserAlreadyRegisteredException ex => new CompleteUserRegistrationRejected(ex.Id, ex.Message,
+                UserAlreadyRegisteredException ex => new CompleteUserRegistrationRejected(ex.UserId, ex.Message,
                     ex.Code),
-                UserNotFoundException ex => new CompleteUserRegistrationRejected(ex.Id, ex.Message, ex.Code),
-                InvalidUserFullNameException ex => new CompleteUserRegistrationRejected(ex.Id, ex.Message,
+                UserNotFoundException ex => new CompleteUserRegistrationRejected(ex.UserId, ex.Message, ex.Code),
+                InvalidUserPseudonymException ex => new CompleteUserRegistrationRejected(ex.UserId, ex.Message,
                     ex.Code),
-                InvalidUserAddressException ex => new CompleteUserRegistrationRejected(ex.Id, ex.Message,
+                InvalidUserPseudonymLengthException  ex => new CompleteUserRegistrationRejected(ex.UserId, ex.Message,
                     ex.Code),
                 _ => null
             };
