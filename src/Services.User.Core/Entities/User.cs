@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Services.User.Core.Events;
 using Services.User.Core.Exceptions;
 
@@ -8,11 +9,13 @@ namespace Services.User.Core.Entities
 {
     public class User : AggregateRoot
     {
+        private static Regex _pseudonymRegex = new Regex(@"^[a-zA-Z]\w*$",
+            RegexOptions.Compiled | RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100));
+        
         private ISet<Guid> _completedRuns = new HashSet<Guid>();
 
         public string Email { get; private set; }
-        public string FullName { get; private set; }
-        public string Address { get; private set; }
+        public string Pseudonym { get; private set; }
         public State State { get; private set; }
         public DateTime CreatedAt { get; private set; }
 
@@ -23,32 +26,38 @@ namespace Services.User.Core.Entities
         }
 
         public User(Guid id, string email, DateTime createdAt) : this(id, email, createdAt, string.Empty,
-            string.Empty, State.Incomplete, Enumerable.Empty<Guid>())
+            State.Incomplete, Enumerable.Empty<Guid>())
         {
         }
 
-        public User(Guid id, string email, DateTime createdAt, string fullName, string address, 
+        public User(Guid id, string email, DateTime createdAt, string pseudonym,
             State state, IEnumerable<Guid> completedRuns = null)
         {
             Id = id;
             Email = email;
             CreatedAt = createdAt;
-            FullName = fullName;
-            Address = address;
+            Pseudonym = pseudonym;
             CompletedRuns = completedRuns ?? Enumerable.Empty<Guid>();
             State = state;
         }
 
-        public void CompleteRegistration(string fullName, string address)
+        public void CompleteRegistration(string pseudonym)
         {
-            if (string.IsNullOrWhiteSpace(fullName))
+            if (string.IsNullOrWhiteSpace(pseudonym))
             {
-                throw new InvalidUserFullNameException(Id, fullName);
+                throw new InvalidUserPseudonymException(Id, pseudonym);
             }
 
-            if (string.IsNullOrWhiteSpace(address))
+            const int minLength = 5;
+            const int maxLength = 15;
+            if (pseudonym.Length is < minLength or > maxLength)
             {
-                throw new InvalidUserAddressException(Id, address);
+                throw new InvalidUserPseudonymLengthException(Id, pseudonym.Length, minLength, maxLength);
+            }
+
+            if (!_pseudonymRegex.Match(pseudonym).Success)
+            {
+                throw new InvalidUserPseudonymException(Id, pseudonym);
             }
 
             if (State != State.Incomplete)
@@ -56,8 +65,7 @@ namespace Services.User.Core.Entities
                 throw new CannotChangeUserStateException(Id, State);
             }
 
-            FullName = fullName;
-            Address = address;
+            Pseudonym = pseudonym;
             State = State.Valid;
             AddEvent(new UserRegistrationCompleted(this));
         }
