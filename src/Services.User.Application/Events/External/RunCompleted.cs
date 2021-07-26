@@ -8,12 +8,12 @@ namespace Services.User.Application.Events.External
     public class RunCompleted : IEvent
     {
         public Guid RunId { get; }
-        public Guid CustomerId { get; }
+        public Guid UserId { get; }
 
-        public RunCompleted(Guid runId, Guid customerId)
+        public RunCompleted(Guid runId, Guid userId)
         {
             RunId = runId;
-            CustomerId = customerId;
+            UserId = userId;
         }
     }
 }
