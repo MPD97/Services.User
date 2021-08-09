@@ -42,6 +42,8 @@ namespace Services.User.Api
                         .Post<CompleteUserRegistration>("users",
                             afterDispatch: (cmd, ctx) => ctx.Response.Created($"users/{cmd.UserId}"))
                         .Put<ChangeUserState>("users/{userId}/state/{state}",
+                            afterDispatch: (cmd, ctx) => ctx.Response.NoContent())
+                        .Put<LockUser>("users/{userId}/lock",
                             afterDispatch: (cmd, ctx) => ctx.Response.NoContent())))
                 .UseLogging()
                 .UseVault();

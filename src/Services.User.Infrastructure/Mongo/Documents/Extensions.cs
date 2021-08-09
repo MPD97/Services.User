@@ -31,7 +31,6 @@ namespace Services.User.Infrastructure.Mongo.Documents
             => new UserDetailsDto
             {
                 Id = document.Id,
-                Email = document.Email,
                 Pseudonym = document.Pseudonym,
                 State = document.State.ToString().ToLowerInvariant(),
                 CreatedAt = document.CreatedAt,

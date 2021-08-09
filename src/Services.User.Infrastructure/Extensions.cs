@@ -90,6 +90,7 @@ namespace Services.User.Infrastructure
                 .UseRabbitMq()
                 .SubscribeCommand<CompleteUserRegistration>()
                 .SubscribeCommand<ChangeUserState>()
+                .SubscribeCommand<LockUser>()
                 .SubscribeEvent<SignedUp>()
                 .SubscribeEvent<RunCompleted>();
 
