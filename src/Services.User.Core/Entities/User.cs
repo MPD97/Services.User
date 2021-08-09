@@ -18,6 +18,9 @@ namespace Services.User.Core.Entities
         public string Pseudonym { get; private set; }
         public State State { get; private set; }
         public DateTime CreatedAt { get; private set; }
+        public DateTime? LockedAt { get; private set; }
+        
+        public string LockedReason { get; private set; }
 
         public IEnumerable<Guid> CompletedRuns
         {
@@ -74,9 +77,12 @@ namespace Services.User.Core.Entities
         
         public void SetIncomplete() => SetState(State.Incomplete);
 
-        public void Lock() => SetState(State.Locked);
+        public void Lock(string reason, DateTime date)
+        {
+            SetState(State.Locked);
+            LockedAt = date;
+        }
 
-        public void MarkAsSuspicious() => SetState(State.Suspicious);
 
         private void SetState(State state)
         {

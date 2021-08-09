@@ -5,7 +5,6 @@
         Unknown,
         Valid,
         Incomplete,
-        Suspicious,
         Locked
     }
 }
