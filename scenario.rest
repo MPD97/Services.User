@@ -1,5 +1,0 @@
-@api = http://localhost:5012
-
-### At first, get users 
-GET {{api}}/users
-Content-Type: application/json
