@@ -4,15 +4,15 @@ using Convey.CQRS.Commands;
 namespace Services.User.Application.Commands
 {
     [Contract]
-    public class ChangeUserState : ICommand
+    public class LockUser : ICommand
     {
         public Guid UserId { get; }
-        public string State { get; }
+        public string Reason { get; }    
         
-        public ChangeUserState(Guid userId, string state)
+        public LockUser(Guid userId, string reason)
         {
             UserId = userId;
-            State = state;
+            Reason = reason;
         }
     }
 }
