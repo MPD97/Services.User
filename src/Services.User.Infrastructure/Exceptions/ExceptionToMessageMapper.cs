@@ -16,6 +16,8 @@ namespace Services.User.Infrastructure.Exceptions
                 {
                     ChangeUserState _ => new ChangeUserStateRejected(ex.UserId,
                         ex.State.ToString().ToLowerInvariant(), ex.Message, ex.Code),
+                    LockUser _ => new ChangeUserStateRejected(ex.UserId,
+                        ex.State.ToString().ToLowerInvariant(), ex.Message, ex.Code),
                     CompleteUserRegistration _ => new CompleteUserRegistrationRejected(ex.UserId, ex.Message,
                         ex.Code),
                     _ => null
