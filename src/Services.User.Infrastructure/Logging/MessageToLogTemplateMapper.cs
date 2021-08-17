@@ -20,12 +20,6 @@ namespace Services.User.Infrastructure.Logging
                     new HandlerLogTemplate {After = "Changed a user with id: {UserId} state to: {State}."}
                 },
                 {
-                    typeof(RunCompleted), new HandlerLogTemplate
-                    {
-                        After = "Run with id: {RunId} for the user with id: {UserId} has been completed."
-                    }
-                },
-                {
                     typeof(SignedUp), new HandlerLogTemplate
                     {
                         After = "Created a new user with id: {UserId}."

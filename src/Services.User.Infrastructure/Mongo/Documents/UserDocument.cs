@@ -13,6 +13,5 @@ namespace Services.User.Infrastructure.Mongo.Documents
         public string Pseudonym { get; set; }
         public State State { get; set; }
         public DateTime CreatedAt { get; set; }
-        public IEnumerable<Guid> CompletedRuns { get; set; }
     }
 }

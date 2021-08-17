@@ -91,8 +91,7 @@ namespace Services.User.Infrastructure
                 .SubscribeCommand<CompleteUserRegistration>()
                 .SubscribeCommand<ChangeUserState>()
                 .SubscribeCommand<LockUser>()
-                .SubscribeEvent<SignedUp>()
-                .SubscribeEvent<RunCompleted>();
+                .SubscribeEvent<SignedUp>();
 
             return app;
         }

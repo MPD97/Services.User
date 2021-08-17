@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Convey.CQRS.Commands;
+using Microsoft.Extensions.Caching.Distributed;
 using Services.User.Application.Exceptions;
 using Services.User.Application.Services;
 using Services.User.Core.Entities;
@@ -14,13 +15,15 @@ namespace Services.User.Application.Commands.Handlers
         private readonly IUserRepository _userRepository;
         private readonly IEventMapper _eventMapper;
         private readonly IMessageBroker _messageBroker;
-        
+        private readonly IDistributedCache _cache;
+
         public CompleteUserRegistrationHandler(IUserRepository userRepository, IEventMapper eventMapper,
-            IMessageBroker messageBroker)
+            IMessageBroker messageBroker, IDistributedCache cache)
         {
             _userRepository = userRepository;
             _eventMapper = eventMapper;
             _messageBroker = messageBroker;
+            _cache = cache;
         }
 
         public async Task HandleAsync(CompleteUserRegistration command)
@@ -40,6 +43,8 @@ namespace Services.User.Application.Commands.Handlers
 
             var events = _eventMapper.MapAll(user.Events);
             await _messageBroker.PublishAsync(events.ToArray());
+
+            await _cache.RemoveAsync(user.Id.ToString());
         }
     }
 }

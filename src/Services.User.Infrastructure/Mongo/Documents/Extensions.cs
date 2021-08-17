@@ -6,7 +6,7 @@ namespace Services.User.Infrastructure.Mongo.Documents
     {
         public static Core.Entities.User AsEntity(this UserDocument document)
             => new Core.Entities.User(document.Id, document.Email, document.CreatedAt, document.Pseudonym,
-                document.State, document.CompletedRuns);
+                document.State);
 
         public static UserDocument AsDocument(this Core.Entities.User entity)
             => new UserDocument
@@ -16,7 +16,6 @@ namespace Services.User.Infrastructure.Mongo.Documents
                 Pseudonym = entity.Pseudonym,
                 State = entity.State,
                 CreatedAt = entity.CreatedAt,
-                CompletedRuns = entity.CompletedRuns
             };
 
         public static UserDto AsDto(this UserDocument document)
@@ -34,7 +33,6 @@ namespace Services.User.Infrastructure.Mongo.Documents
                 Pseudonym = document.Pseudonym,
                 State = document.State.ToString().ToLowerInvariant(),
                 CreatedAt = document.CreatedAt,
-                CompletedRuns = document.CompletedRuns
             };
     }
 }
