@@ -24,6 +24,7 @@ namespace Services.User.Api
             => await CreateWebHostBuilder(args)
                 .Build()
                 .RunAsync();
+
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
             => WebHost.CreateDefaultBuilder(args)
                 .ConfigureServices(services => services
@@ -45,7 +46,6 @@ namespace Services.User.Api
                             afterDispatch: (cmd, ctx) => ctx.Response.NoContent())
                         .Put<LockUser>("users/{userId}/lock",
                             afterDispatch: (cmd, ctx) => ctx.Response.NoContent())))
-                .UseLogging()
-                .UseVault();
+                .UseLogging();
     }
 }
