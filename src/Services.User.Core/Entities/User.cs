@@ -12,7 +12,6 @@ namespace Services.User.Core.Entities
         private static readonly Regex PseudonymRegex = new Regex(@"^[a-zA-Z]\w*$",
             RegexOptions.Compiled | RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100));
         
-        public string Email { get; private set; }
         public string Pseudonym { get; private set; }
         public State State { get; private set; }
         public DateTime CreatedAt { get; private set; }
@@ -20,16 +19,15 @@ namespace Services.User.Core.Entities
         public Guid? LockedBy { get; private set; }
         public string LockedReason { get; private set; }
 
-        public User(Guid id, string email, DateTime createdAt) : this(id, email, createdAt, string.Empty,
+        public User(Guid id, string email, DateTime createdAt) : this(id, createdAt, string.Empty,
             State.Incomplete)
         {
         }
 
-        public User(Guid id, string email, DateTime createdAt, string pseudonym,
+        public User(Guid id, DateTime createdAt, string pseudonym,
             State state)
         {
             Id = id;
-            Email = email;
             CreatedAt = createdAt;
             Pseudonym = pseudonym;
             State = state;
