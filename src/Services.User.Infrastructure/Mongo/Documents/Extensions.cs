@@ -5,14 +5,13 @@ namespace Services.User.Infrastructure.Mongo.Documents
     public static class Extensions
     {
         public static Core.Entities.User AsEntity(this UserDocument document)
-            => new Core.Entities.User(document.Id, document.Email, document.CreatedAt, document.Pseudonym,
+            => new Core.Entities.User(document.Id, document.CreatedAt, document.Pseudonym,
                 document.State);
 
         public static UserDocument AsDocument(this Core.Entities.User entity)
             => new UserDocument
             {
                 Id = entity.Id,
-                Email = entity.Email,
                 Pseudonym = entity.Pseudonym,
                 State = entity.State,
                 CreatedAt = entity.CreatedAt,

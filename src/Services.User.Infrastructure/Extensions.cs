@@ -4,9 +4,6 @@ using System.Linq;
 using System.Text;
 using Convey;
 using Convey.WebApi;
-using Convey.WebApi.Security;
-using Convey.CQRS.Commands;
-using Convey.CQRS.Events;
 using Convey.CQRS.Queries;
 using Convey.Discovery.Consul;
 using Convey.Docs.Swagger;
@@ -17,10 +14,8 @@ using Convey.MessageBrokers.CQRS;
 using Convey.MessageBrokers.Outbox;
 using Convey.MessageBrokers.Outbox.Mongo;
 using Convey.MessageBrokers.RabbitMQ;
-using Convey.Metrics.AppMetrics;
 using Convey.Persistence.MongoDB;
 using Convey.Persistence.Redis;
-using Convey.Security;
 using Convey.Tracing.Jaeger;
 using Convey.Tracing.Jaeger.RabbitMQ;
 using Convey.WebApi.CQRS;
@@ -36,7 +31,6 @@ using Services.User.Application.Services;
 using Services.User.Core.Repositories;
 using Services.User.Infrastructure.Exceptions;
 using Services.User.Infrastructure.Contexts;
-using Services.User.Infrastructure.Decorators;
 using Services.User.Infrastructure.Logging;
 using Services.User.Infrastructure.Mongo.Documents;
 using Services.User.Infrastructure.Mongo.Repositories;
@@ -54,8 +48,6 @@ namespace Services.User.Infrastructure
             builder.Services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
             builder.Services.AddTransient<IAppContextFactory, AppContextFactory>();
             builder.Services.AddTransient(ctx => ctx.GetRequiredService<IAppContextFactory>().Create());
-            builder.Services.TryDecorate(typeof(ICommandHandler<>), typeof(OutboxCommandHandlerDecorator<>));
-            builder.Services.TryDecorate(typeof(IEventHandler<>), typeof(OutboxEventHandlerDecorator<>));
 
             return builder
                 .AddErrorHandler<ExceptionToResponseMapper>()
@@ -69,13 +61,10 @@ namespace Services.User.Infrastructure
                 .AddExceptionToMessageMapper<ExceptionToMessageMapper>()
                 .AddMongo()
                 .AddRedis()
-                .AddMetrics()
                 .AddJaeger()
                 .AddHandlersLogging()
                 .AddMongoRepository<UserDocument, Guid>("users")
-                .AddWebApiSwaggerDocs()
-                .AddCertificateAuthentication()
-                .AddSecurity();
+                .AddWebApiSwaggerDocs();
         }
 
         public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
@@ -85,8 +74,6 @@ namespace Services.User.Infrastructure
                 .UseJaeger()
                 .UseConvey()
                 .UsePublicContracts<ContractAttribute>()
-                .UseMetrics()
-                .UseCertificateAuthentication()
                 .UseRabbitMq()
                 .SubscribeCommand<CompleteUserRegistration>()
                 .SubscribeCommand<ChangeUserState>()

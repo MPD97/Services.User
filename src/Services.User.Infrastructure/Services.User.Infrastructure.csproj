@@ -35,4 +35,8 @@
       <ProjectReference Include="..\Services.User.Application\Services.User.Application.csproj" />
     </ItemGroup>
     
+    <ItemGroup>
+      <Folder Include="Decorators" />
+    </ItemGroup>
+    
 </Project>
